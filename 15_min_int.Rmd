@@ -1,0 +1,118 @@
+---
+title: "15-Minute Intervals"
+author: "Jessica Reyes"
+date: "2024-11-13"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+# Insert packages you need here
+library(knitr)
+library(dplyr)
+library(ggplot2)
+library(effsize)
+library(broom)
+library(tidyr)
+library(zoo)
+library(lubridate)
+library(lme4)
+library(gt)
+library(png)
+```
+
+```{r echo=FALSE}
+new_data <- read.csv("C://Users//Owner//Desktop////Spring_2025//HICAHS//new~data_formula.csv")
+```
+
+```{r warning = FALSE, message=FALSE, echo=TRUE, include=FALSE}
+new_data$Time <- as.POSIXct(new_data$Time, format = "%H:%M:%S", tz = "UTC")
+
+data <- new_data %>%
+  mutate(Time = as.POSIXct(Time, format = "%H:%M:%S"),
+         Interval = floor(as.numeric(difftime(Time, min(Time), units = "mins")) / 15) * 15)
+
+# Calculate averages by Subject ID, Task, and 15-minute intervals
+result <- data %>%
+  group_by(Subject.ID, Task, Interval) %>%
+  summarize(
+    Start_Time = min(Time),
+    Working_HR = mean(BPM, na.rm = TRUE),
+    Duration = n() * 1 # 1 row per second
+  ) %>%
+  ungroup()
+
+# View the result
+print(result)
+```
+
+```{r echo=FALSE}
+subjects <- unique(data$Subject.ID)
+for (subject in subjects) {
+  subject_data <- data %>% filter(Subject.ID == subject)
+  
+  subject_plot <- ggplot(subject_data, aes(x = Time, y = BPM, color = Task)) +
+    geom_point(alpha = 0.6, size = 2) +
+    facet_wrap(~ Subject.ID, scales = "free_x") +
+    labs(
+      title = paste("BPM over Time for Subject", subject),
+      x = "Time",
+      y = "BPM",
+      color = "Task"
+    ) +
+    theme_minimal(base_size = 10) +
+    theme(
+      strip.text = element_text(size = 8, face = "bold"),
+      legend.position = "bottom"
+    )
+  
+  # Print the plot for this subject
+  print(subject_plot)
+}
+```
+
+
+
+```{r echo=FALSE, include=FALSE}
+subjects <- unique(data$Subject.ID)
+for (subject in subjects) {
+  # Filter the data for the current subject
+  subject_data <- result %>% filter(Subject.ID == subject)
+  
+  # Create the plot using the subject-specific data
+  subject_plot <- ggplot(subject_data, aes(x = Start_Time, y = Working_HR, color = Task)) +
+    geom_point(alpha = 0.6, size = 2) +
+    facet_wrap(~ Task, scales = "free_x") +
+    labs(
+      title = paste("15 Minute Intervals of Working Heart Rate for Subject", subject),
+      x = "Time",
+      y = "BPM",
+      color = "Task"
+    ) +
+    theme_minimal(base_size = 14) +
+    theme(
+      strip.text = element_text(size = 12, face = "bold"),
+      legend.position = "bottom"
+    )
+  
+  # Print the plot for this subject
+  print(subject_plot)
+}
+```
+
+```{r echo=FALSE}
+
+```
+
+
+
+# Appendix
+
+```{r show-code, ref.label = all_labels(), echo = TRUE, eval = FALSE}
+
+```
+
+
+
