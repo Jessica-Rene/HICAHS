@@ -1,0 +1,248 @@
+---
+title: "Resting HR"
+author: "Jessica Reyes"
+date: "2024-12-18"
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## R Markdown
+
+
+## Finding the rolling mean for the minimum BPM interval (10 seconds)
+
+
+```{r echo=FALSE}
+library(zoo)
+ 
+x <- read.csv("C://Users//Owner//Desktop//Spring_2025//HICAHS//Testing.csv")
+
+rolling_x <- rollmean(x = x$x, k = 10)
+
+```
+
+```{r}
+# Calculation for subject 1 (TASK 2)
+rolling_A = rollmean(x = x$A, k = 10)
+min(rolling_A, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 2 (Task 2)
+rolling_B = rollmean(x = x$B, k = 10)
+min(rolling_B, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 3 (TASK 2)
+rolling_C = rollmean(x = x$C, k = 10)
+min(rolling_C, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 5 (Task 2)
+
+rolling_D = rollmean(x = x$D, k = 10)
+min(rolling_D, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 7 (TASK 3 & 4)
+rolling_E = rollmean(x = x$E, k = 10)
+min(rolling_E, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 8 (Task 3 & 4)
+rolling_F = rollmean(x = x$F, k = 10)
+min(rolling_F, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 9 (TASK 3 & 4)
+rolling_G = rollmean(x = x$G, k = 10)
+min(rolling_G, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 10 (Task 3 & 4)
+rolling_H = rollmean(x = x$H, k = 10)
+min(rolling_H, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 11 (TASK 3 & 4)
+rolling_I = rollmean(x = x$I, k = 10)
+min(rolling_I, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 14 (Task 3 & 4)
+rolling_J = rollmean(x = x$J, k = 10)
+min(rolling_J, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 15 (TASK 1)
+rolling_K = rollmean(x = x$K, k = 10)
+min(rolling_K, na.rm = TRUE)
+```
+
+
+```{r}
+# Calculation for subject 16 (Task 3 & 4)
+rolling_L = rollmean(x = x$L, k = 10)
+min(rolling_L, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 17 (TASK 3 & 4)
+rolling_M = rollmean(x = x$M, k = 10)
+min(rolling_M, na.rm = TRUE)
+```
+
+
+```{r}
+# Calculation for subject 18 (TASK 3 (Task 5 BPM were missing))
+rolling_N = rollmean(x = x$N, k = 10)
+min(rolling_N, na.rm = TRUE)
+```
+
+
+```{r}
+# Calculation for subject 19 (TASK 3 & 5)
+rolling_O = rollmean(x = x$O, k = 10)
+min(rolling_O, na.rm = TRUE)
+```
+
+
+```{r}
+# Calculation for subject 20 (TASK 3 & 5)
+rolling_P = rollmean(x = x$P, k = 10)
+min(rolling_P, na.rm = TRUE)
+```
+
+
+```{r}
+# Calculation for subject 21 (TASK 3 & 5)
+rolling_Q = rollmean(x = x$Q, k = 10)
+min(rolling_Q, na.rm = TRUE)
+```
+
+
+
+```{r}
+# Calculation for subject 22 (TASK 3 & 5)
+rolling_R = rollmean(x = x$R, k = 10)
+min(rolling_R, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 23 (TASK 3 & 5)
+rolling_S = rollmean(x = x$S, k = 10)
+min(rolling_S, na.rm = TRUE)
+```
+
+
+```{r}
+# Calculation for subject 24 (TASK 8 & 2)
+rolling_T = rollmean(x = x$T, k = 10)
+min(rolling_T, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 25 (TASK 8 & 2)
+rolling_U = rollmean(x = x$U, k = 10)
+min(rolling_U, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 26 (TASK 8 & 2)
+rolling_V = rollmean(x = x$V, k = 10)
+min(rolling_V, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 27 (TASK 8 & 2)
+rolling_W = rollmean(x = x$W, k = 10)
+min(rolling_W, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 28 (TASK 8 & 2)
+rolling_X = rollmean(x = x$X, k = 10)
+min(rolling_X, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 29 (TASK 7 & 9)
+rolling_Y = rollmean(x = x$Y, k = 10)
+min(rolling_Y, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 30 (TASK 7 & 9)
+rolling_Z = rollmean(x = x$Z, k = 10)
+min(rolling_Z, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 31 (TASK 7 & 9)
+rolling_AA = rollmean(x = x$AA, k = 10)
+min(rolling_AA, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 32 (TASK 7 & 9)
+rolling_AB = rollmean(x = x$AB, k = 10)
+min(rolling_AB, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 33 (TASK 7 & 9)
+rolling_AC = rollmean(x = x$AC, k = 10)
+min(rolling_AC, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 34 (TASK 7 & 9)
+rolling_AD = rollmean(x = x$AD, k = 10)
+min(rolling_AD, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 35 (TASK 7 & 9)
+rolling_AE = rollmean(x = x$AE, k = 10)
+min(rolling_AE, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 36 (TASK 10)
+rolling_AF = rollmean(x = x$AF, k = 10)
+min(rolling_AF, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 37 (TASK 10)
+rolling_AG = rollmean(x = x$AG, k = 10)
+min(rolling_AG, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 38 (TASK 10)
+rolling_AH = rollmean(x = x$AH, k = 10)
+min(rolling_AH, na.rm = TRUE)
+```
+
+```{r}
+# Calculation for subject 39 (TASK 10)
+rolling_AI = rollmean(x = x$AI, k = 10)
+min(rolling_AI, na.rm = TRUE)
+```
+
+
