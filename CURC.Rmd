@@ -1,0 +1,152 @@
+---
+title: "CURC"
+author: "Jessica Reyes"
+date: "2025-02-15"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+library(dplyr)
+library(lme4)
+library(lmerTest)
+library(pbkrtest)
+library(emmeans)
+```
+
+```{r echo=FALSE}
+new_data <- read.csv("C://Users//Owner//Desktop//HICAHS//new~data_formula.csv")
+head(new_data)
+```
+
+```{r echo=FALSE, results="hide", warning=FALSE}
+data_clean <- new_data[!is.na(new_data$AvgTemp) & !is.na(new_data$X.CVL), ]
+
+task_plot <- function() {
+  ggplot(data_clean) +
+    geom_point(aes(x = AvgTemp, y = X.CVL, color = factor(Subject.ID))) +
+      geom_smooth(aes(x = AvgTemp, y = X.CVL), method = "lm", se = FALSE, color = "black") +
+    xlab("Temperature (ºC)") +
+    ylab("Relative Cardiac Cost") +
+    ggtitle("Cardiovascular Load vs. Average Temperature") +
+    facet_wrap(~Task) +
+    scale_color_discrete(name = "Subject ID")
+}
+
+print(task_plot())
+```
+
+```{r}
+data_clean <- new_data[!is.na(new_data$AvgTemp) & !is.na(new_data$X.CVL), ]
+
+task_plot <- function() {
+  ggplot(data_clean, aes(x = AvgTemp, y = X.CVL, color = factor(Subject.ID))) +
+    geom_point(alpha = 0.3, size = 0.3) +
+    geom_smooth(aes(x = AvgTemp, y = X.CVL), method = "lm", se = FALSE, color = "black", linewidth = 0.5) +
+    xlab("Average Temperature (ºC)") +
+    ylab("Percentage of Cardiovascular Load") +
+    ggtitle("Cardiovascular Load vs. Average Temperature") +
+    facet_wrap(~Task, ncol = 2) +
+    scale_color_discrete(name = "Subject ID") +
+    theme(strip.text = element_text(size = 10))
+}
+
+print(task_plot())
+```
+
+```{r}
+options(show.signif.stars = FALSE)
+lmOut <- lmer(X.CVL ~ Task + AvgTemp + (1|Subject.ID), data=data_clean)
+summary(lmOut)
+```
+
+```{r message=FALSE, warning=FALSE}
+# table for each task & estimated marginal means (from HICAHS poster) 
+emmeans(lmOut, pairwise ~ Task)
+```
+
+```{r warning=FALSE, message=FALSE}
+#predictions of emmeans (HICAHS poster)
+emmip(lmOut, ~Task, CIs = TRUE, 
+      mapping = aes(color = Task))
+
+emm_results <- emmeans(lmOut, ~Task)
+
+# Convert to a dataframe
+emm_df <- as.data.frame(emm_results)
+
+# Reorder Task by mean estimate
+emm_df$Task <- reorder(emm_df$Task, emm_df$emmean)
+
+# Create an ordered `emmip` plot
+emmip(lmOut, ~Task, CIs = TRUE, 
+      mapping = aes(color = Task)) + 
+  scale_color_manual(values = c("Harvesting Lettuce" = "#FFA50080",    
+                                "Harvesting Cilantro" = "#00FFFF80",
+                                "Break" = "#FF000556",
+                                "Packing" = "#0000FF80",    
+                                "Corn Sorting" = "#80000080",    
+                                "Harvesting Spinach" = "#80008080",    
+                                "Harvesting Zucchini/Yellow Squash" = "#00800080",    
+                                "Weeding" = "#FF000080",    
+                                "Corn Picking" = "#00808080",
+                                "Corn Loading" = "#FF00FF80")) +  
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+          scale_x_discrete(limits = levels(emm_df$Task))
+```
+
+```{r}
+levels(emm_df$Task)
+anova(lmOut)
+```
+
+```{r}
+options(show.signif.stars = FALSE)
+lmOut2 <- lm(X.CVL ~ AvgTemp + Task, data=new_data)
+summary(lmOut2)
+```
+
+```{r}
+options(show.signif.stars = FALSE)
+lmOut2 <- lm(X.CVL ~ AvgTemp + Task, data=new_data)
+emmeans(lmOut2, pairwise ~ Task)
+```
+
+```{r echo=FALSE, warning=FALSE}
+#plot used on HICAHS poster
+ggplot(data_clean, aes(x = AvgTemp, y = X.CVL, color = Task)) + 
+  geom_point(alpha = 0.3, size = 0.3) + 
+  geom_smooth(method = "lm", se = FALSE, linewidth = 0.5) +
+  labs(title = "Cardiovascular Load vs. Average Temperature",
+       x = "Average Temperature (°C)",
+       y = "Percentage of Cardiovascular Load",
+       color = "Task") + 
+  theme_minimal()
+```
+
+```{r}
+ggplot(data_clean, aes(x = AvgTemp, y = X.CVL, color = Task)) + 
+  geom_point(alpha = 0.3, size = 0.3) +  # Points with alpha transparency
+  geom_smooth(method = "lm", se = FALSE, linewidth = 0.5) +
+  labs(title = "Cardiovascular Load vs. Average Temperature",
+       x = "Average Temperature (°C)",
+       y = "Percentage of Cardiovascular Load",
+       color = "Task") + 
+  scale_color_manual(values = c("Weeding" = "#FF000080",    
+                                "Packing" = "#0000FF80",    
+                                "Harvesting Zucchini/Yellow Squash" = "#00800080",    
+                                "Harvesting Spinach" = "#80008080",    
+                                "Harvesting Lettuce" = "#FFA50080",
+                                "Harvesting Cilantro" = "#00FFFF80",
+                                "Corn Sorting" = "#80000080",
+                                "Corn Picking" = "#00808080",
+                                "Corn Loading" = "#FF00FF80")) + 
+  theme_minimal() + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
